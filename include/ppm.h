@@ -1,6 +1,8 @@
 #ifndef PPM_H
 #define PPM_H
 
+#include <iostream>
+
 namespace PPM
 {
     enum class PPMType
@@ -32,6 +34,9 @@ namespace PPM
         {};
 
     };
+
+    std::ostream& operator<<(std::ostream& os, PPMType type);
+    std::istream& operator>>(std::istream& is, PPMType& type);
 
 
     
