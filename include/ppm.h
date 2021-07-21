@@ -2,6 +2,7 @@
 #define PPM_H
 
 #include <iostream>
+#include <vector> 
 
 namespace PPM
 {
@@ -64,12 +65,41 @@ namespace PPM
             m_maxValueColor{maxValueColor}
         {};
 
+        int getWidth() const;
+        int getHeight() const;
+        int getMaxValueColor() const;
+
+        friend std::istream& operator>>(std::istream& is, PPMHeader& header);
+        friend std::ostream& operator<<(std::ostream& os, PPMHeader header);
     };
 
-    std::ostream& operator<<(std::ostream& os, PPMType type);
+    class PPMImage
+    {
+    private:
+        PPMHeader           m_header;
+        std::vector<Color>  m_data;
+
+    public:
+        PPMImage() = default;
+        explicit PPMImage(const std::string& filepath);
+
+        void setImage(const std::string& filepath);
+        bool setColor(int x, int y, const Color& color);
+
+        int getWidth() const;
+        int getHeight() const;
+        Color getColor(int x, int y) const;
+
+        void saveImage(const std::string& filepath);
+    };
+
+    std::istream& operator>>(std::istream& is, Color& color);
     std::istream& operator>>(std::istream& is, PPMType& type);
+    std::istream& operator>>(std::istream& is, PPMHeader& header);
 
-
+    std::ostream& operator<<(std::ostream& os, Color color);
+    std::ostream& operator<<(std::ostream& os, PPMType type);
+    std::ostream& operator<<(std::ostream& os, PPMHeader header);
     
 } // namespace PPM
 
