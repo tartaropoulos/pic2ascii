@@ -5,6 +5,37 @@
 
 namespace PPM
 {
+    class Color
+    {
+    private:
+        int m_r;
+        int m_g;
+        int m_b;
+
+    public:
+        Color() :
+            m_r{0},
+            m_g{0},
+            m_b{0}
+        {};
+
+        Color(int r, int g, int b) :
+            m_r{r},
+            m_g{g},
+            m_b{b}
+        {};
+
+        void setColor(int r, int g, int b);
+        void setColor(const Color& color);
+
+        int getR() const;
+        int getG() const;
+        int getB() const;
+
+        friend std::istream& operator>>(std::istream& is, Color& color);
+        friend std::ostream& operator<<(std::ostream& os, Color color);
+    };
+
     enum class PPMType
     {
         P3 = 3,
@@ -41,6 +72,5 @@ namespace PPM
 
     
 } // namespace PPM
-
 
 #endif // PPM_H
