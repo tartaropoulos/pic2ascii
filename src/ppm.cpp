@@ -1,5 +1,6 @@
 #include "ppm.h"
 
+#include <exception>
 #include <fstream>
 
 //////////////////////////////////////////////
@@ -121,33 +122,50 @@ PPM::PPMImage::PPMImage(const std::string& filepath)
 {
     std::ifstream file(filepath);
 
-    file >> m_header;
+    if ( !(file >> m_header) )
+    {
+        throw std::runtime_error{"Can't read ppm header from file."};
+    }
 
     m_data.resize(m_header.getWidth() * m_header.getHeight());
 
     for (auto& pixel : m_data)
     {
-        file >> pixel;
+        if ( !(file >> pixel) )
+        {
+            throw std::runtime_error{"Can't read color ppm data from file."};
+        }
     }
 
     file.close();
 }
 
-void PPM::PPMImage::setImage(const std::string& filepath)
+bool PPM::PPMImage::setImage(const std::string& filepath)
 {
     std::ifstream file(filepath);
 
-    file >> m_header;
+    PPM::PPMHeader tempHeader{m_header}; 
+    if ( !(file >> m_header) )
+    {
+        m_header = tempHeader;
+        return false;
+    }
 
-    m_data.clear();
+    std::vector<PPM::Color> tempData{std::move(m_data)};
     m_data.resize(m_header.getWidth() * m_header.getHeight());
 
     for (auto& pixel : m_data)
     {
-        file >> pixel;
+        if ( !(file >> pixel) )
+        {
+            m_data = std::move(tempData);
+            return false;
+        }
     }
 
     file.close();
+
+    return true;
 }
 
 bool PPM::PPMImage::setColor(int x, int y, const PPM::Color& color)
@@ -177,16 +195,24 @@ PPM::Color PPM::PPMImage::getColor(int x, int y) const
     return m_data.at(x + y * m_header.getHeight());
 }
 
-void PPM::PPMImage::saveImage(const std::string& filepath)
+bool PPM::PPMImage::saveImage(const std::string& filepath)
 {
     std::ofstream file(filepath);
 
-    file << m_header;
+    if ( !(file << m_header) )
+    {
+        return false;
+    }
 
     for (auto& pixel : m_data)
     {
-        file << pixel;
+        if ( !(file << pixel) )
+        {
+            return false;
+        }
     }
 
     file.close();
+
+    return true;
 }

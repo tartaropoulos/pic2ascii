@@ -83,14 +83,14 @@ namespace PPM
         PPMImage() = default;
         explicit PPMImage(const std::string& filepath);
 
-        void setImage(const std::string& filepath);
+        bool setImage(const std::string& filepath);
         bool setColor(int x, int y, const Color& color);
 
         int getWidth() const;
         int getHeight() const;
         Color getColor(int x, int y) const;
 
-        void saveImage(const std::string& filepath);
+        bool saveImage(const std::string& filepath);
     };
 
     std::istream& operator>>(std::istream& is, Color& color);
