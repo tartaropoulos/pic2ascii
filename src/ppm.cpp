@@ -15,6 +15,7 @@ void PPM::Color::setColor(int r, int g, int b)
     m_b = b;
 }
 
+
 void PPM::Color::setColor(const PPM::Color& color)
 {
     m_r = color.getR();
@@ -22,20 +23,24 @@ void PPM::Color::setColor(const PPM::Color& color)
     m_b = color.getB();
 }
 
+
 int PPM::Color::getR() const
 {
     return m_r;
 }
+
 
 int PPM::Color::getG() const
 {
     return m_g;
 }
 
+
 int PPM::Color::getB() const
 {
     return m_b;
 }
+
 
 std::istream& PPM::operator>>(std::istream& is, PPM::Color& color)
 {
@@ -43,6 +48,7 @@ std::istream& PPM::operator>>(std::istream& is, PPM::Color& color)
 
     return is;
 }
+
 
 std::ostream& PPM::operator<<(std::ostream& os, PPM::Color color)
 {
@@ -60,6 +66,7 @@ std::ostream& PPM::operator<<(std::ostream& os, PPM::PPMType type)
 {
     return os << 'P' << static_cast<int>(type);
 }
+
 
 std::istream& PPM::operator>>(std::istream& is, PPM::PPMType& type)
 {
@@ -90,26 +97,36 @@ int PPM::PPMHeader::getWidth() const
     return m_width;
 }
 
+
 int PPM::PPMHeader::getHeight() const
 {
     return m_height;
 }
+
 
 int PPM::PPMHeader::getMaxValueColor() const
 {
     return m_maxValueColor;
 }
 
+
 std::istream& PPM::operator>>(std::istream& is, PPM::PPMHeader& header)
 {
-    is >> header.m_type >> header.m_width >> header.m_height >> header.m_maxValueColor;
+    is >> header.m_type >> 
+          header.m_width >> 
+          header.m_height >> 
+          header.m_maxValueColor;
 
     return is;
 }
 
+
 std::ostream& PPM::operator<<(std::ostream& os, PPM::PPMHeader header)
 {
-    os << header.m_type << " " << header.m_width << " " << header.m_height << " " << header.m_maxValueColor << std::endl;
+    os << header.m_type << " " << 
+          header.m_width << " " << 
+          header.m_height << " " << 
+          header.m_maxValueColor << std::endl;
 
     return os;
 }
@@ -141,6 +158,7 @@ PPM::PPMImage::PPMImage(const std::string& filepath)
     file.close();
 }
 
+
 bool PPM::PPMImage::setImage(const std::string& filepath)
 {
     std::ifstream file(filepath);
@@ -169,10 +187,13 @@ bool PPM::PPMImage::setImage(const std::string& filepath)
     return true;
 }
 
+
 bool PPM::PPMImage::setColor(int x, int y, const PPM::Color& color)
 {
     int maxValueColor{m_header.getMaxValueColor()};
-    if (color.getR() <= maxValueColor && color.getG() <= maxValueColor && color.getB() <= maxValueColor)
+    if (color.getR() <= maxValueColor && 
+        color.getG() <= maxValueColor && 
+        color.getB() <= maxValueColor)
     {
         m_data.at(x + y * m_header.getHeight()).setColor(color);
         return true;
@@ -181,20 +202,24 @@ bool PPM::PPMImage::setColor(int x, int y, const PPM::Color& color)
     return false;
 }
 
+
 int PPM::PPMImage::getWidth() const
 {
     return m_header.getWidth();
 }
+
 
 int PPM::PPMImage::getHeight() const
 {
     return m_header.getHeight();
 }
 
+
 PPM::Color PPM::PPMImage::getColor(int x, int y) const
 {
     return m_data.at(x + y * m_header.getHeight());
 }
+
 
 bool PPM::PPMImage::saveImage(const std::string& filepath)
 {

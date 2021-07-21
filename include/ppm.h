@@ -37,10 +37,12 @@ namespace PPM
         friend std::ostream& operator<<(std::ostream& os, Color color);
     };
 
+
     enum class PPMType
     {
         P3 = 3,
     };
+
 
     class PPMHeader
     {
@@ -73,6 +75,7 @@ namespace PPM
         friend std::ostream& operator<<(std::ostream& os, PPMHeader header);
     };
 
+
     class PPMImage
     {
     private:
@@ -92,6 +95,7 @@ namespace PPM
 
         bool saveImage(const std::string& filepath);
     };
+
 
     std::istream& operator>>(std::istream& is, Color& color);
     std::istream& operator>>(std::istream& is, PPMType& type);
