@@ -1,6 +1,7 @@
 #include "ppm.h"
 
 #include <exception>
+#include <filesystem>
 #include <fstream>
 
 //////////////////////////////////////////////
@@ -197,10 +198,39 @@ PPM::Color PPM::PPMImage::getColor(int x, int y) const
 
 bool PPM::PPMImage::saveImage(const std::string& filepath)
 {
+    bool isAlreadyExists{ std::filesystem::exists(filepath) };
+    std::filesystem::path filepathOriginal{filepath};
+    std::filesystem::path filepathCopy;
+
+    if (isAlreadyExists)
+    {
+        filepathCopy = filepathOriginal;
+        filepathCopy.replace_filename( filepathCopy.stem() += 
+                                       std::filesystem::path{"_temp"} += 
+                                       filepathCopy.extension() );
+
+        std::filesystem::copy_file(filepathOriginal, filepathCopy);
+    }
+
+    auto clearTempFile{ [isAlreadyExists, &filepathOriginal, &filepathCopy]
+        {
+            if (isAlreadyExists) 
+            {
+                std::filesystem::copy_file(filepathCopy, filepathOriginal);
+                std::filesystem::remove(filepathCopy);
+            }
+            else
+            {
+                std::filesystem::remove(filepathOriginal);
+            }
+        } };
+
     std::ofstream file(filepath);
 
     if ( !(file << m_header) )
     {
+        clearTempFile();
+
         return false;
     }
 
@@ -208,11 +238,18 @@ bool PPM::PPMImage::saveImage(const std::string& filepath)
     {
         if ( !(file << pixel) )
         {
+            clearTempFile();
+
             return false;
         }
     }
 
     file.close();
+
+    if (isAlreadyExists)
+    {
+        std::filesystem::remove(filepathCopy);
+    }
 
     return true;
 }
