@@ -153,7 +153,7 @@ PPM::PPMImage::PPMImage(const std::string& filepath)
         throw std::runtime_error{"Can't read ppm header from file."};
     }
 
-    m_data.resize(m_header.getWidth() * m_header.getHeight());
+    m_data.resize( m_header.getWidth() * m_header.getHeight() );
 
     for (auto& pixel : m_data)
     {
@@ -178,8 +178,8 @@ bool PPM::PPMImage::setImage(const std::string& filepath)
         return false;
     }
 
-    std::vector<PPM::Color> tempData{std::move(m_data)};
-    m_data.resize(m_header.getWidth() * m_header.getHeight());
+    std::vector<PPM::Color> tempData{ std::move(m_data) };
+    m_data.resize( m_header.getWidth() * m_header.getHeight() );
 
     for (auto& pixel : m_data)
     {
@@ -222,7 +222,7 @@ int PPM::PPMImage::getHeight() const
 
 PPM::Color PPM::PPMImage::getColor(int x, int y) const
 {
-    return m_data.at(x + y * m_header.getHeight());
+    return m_data.at( x + y * m_header.getHeight() );
 }
 
 
