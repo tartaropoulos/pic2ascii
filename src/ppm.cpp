@@ -18,9 +18,7 @@ void PPM::Color::setColor(int r, int g, int b)
 
 void PPM::Color::setColor(const PPM::Color& color)
 {
-    m_r = color.getR();
-    m_g = color.getG();
-    m_b = color.getB();
+    operator=(color);
 }
 
 
