@@ -8,6 +8,22 @@
 //
 // Method implementations of Color class
 //
+bool PPM::Color::operator==(const int value) const
+{
+    return m_r == value && m_g == value && m_b == value;
+}
+
+
+auto PPM::Color::operator<=>(const int value) const
+{
+    if (auto compareR{m_r <=> value}; compareR != 0) return compareR;
+
+    if (auto compareG{m_g <=> value}; compareG != 0) return compareG;
+
+    return m_b <=> value;
+}
+
+
 void PPM::Color::setColor(int r, int g, int b)
 {
     m_r = r;
@@ -188,10 +204,7 @@ bool PPM::PPMImage::setImage(const std::string& filepath)
 
 bool PPM::PPMImage::setColor(int x, int y, const PPM::Color& color)
 {
-    int maxValueColor{m_header.getMaxValueColor()};
-    if (color.getR() <= maxValueColor && 
-        color.getG() <= maxValueColor && 
-        color.getB() <= maxValueColor)
+    if ( 0 <= color && color <= m_header.getMaxValueColor() )
     {
         m_data.at(x + y * m_header.getHeight()).setColor(color);
         return true;

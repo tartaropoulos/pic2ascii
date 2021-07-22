@@ -26,6 +26,9 @@ namespace PPM
             m_b{b}
         {};
 
+        bool operator==(const int value) const;
+        auto operator<=>(const int value) const;
+
         void setColor(int r, int g, int b);
         void setColor(const Color& color);
 
