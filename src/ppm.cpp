@@ -32,12 +32,6 @@ void PPM::Color::setColor(int r, int g, int b)
 }
 
 
-void PPM::Color::setColor(const PPM::Color& color)
-{
-    operator=(color);
-}
-
-
 int PPM::Color::getR() const
 {
     return m_r;
@@ -206,7 +200,7 @@ bool PPM::PPMImage::setColor(int x, int y, const PPM::Color& color)
 {
     if ( 0 <= color && color <= m_header.getMaxValueColor() )
     {
-        m_data.at(x + y * m_header.getHeight()).setColor(color);
+        m_data.at( x + y * m_header.getHeight() ) = color;
         return true;
     }
 

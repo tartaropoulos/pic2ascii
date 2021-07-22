@@ -30,7 +30,6 @@ namespace PPM
         auto operator<=>(const int value) const;
 
         void setColor(int r, int g, int b);
-        void setColor(const Color& color);
 
         int getR() const;
         int getG() const;
