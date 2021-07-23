@@ -50,17 +50,39 @@ int PPM::Color::getB() const
 }
 
 
+PPM::PPMType PPM::Color::getType() const
+{
+    return m_type;
+}
+
+
 std::istream& PPM::operator>>(std::istream& is, PPM::Color& color)
 {
-    is >> color.m_r >> color.m_g >> color.m_b;
-
+    if (color.getType() == PPM::PPMType::P3)
+    {
+        is >> color.m_r >> color.m_g >> color.m_b;
+    }
+    else
+    {
+        color.m_r = is.get();
+        color.m_g = is.get();
+        color.m_b = is.get();
+    }
+    
     return is;
 }
 
 
 std::ostream& PPM::operator<<(std::ostream& os, PPM::Color color)
 {
-    os << color.m_r << " " << color.m_g << " " << color.m_b << std::endl;
+    if (color.getType() == PPM::PPMType::P3)
+    {
+        os << color.m_r << " " << color.m_g << " " << color.m_b << std::endl;
+    }
+    else
+    {
+        os << color.m_r << color.m_g << color.m_b;
+    }
 
     return os;
 }
@@ -100,6 +122,12 @@ std::istream& PPM::operator>>(std::istream& is, PPM::PPMType& type)
 //
 // Method implementation of PPMHeader class
 //
+PPM::PPMType PPM::PPMHeader::getType() const
+{
+    return m_type;
+}
+
+
 int PPM::PPMHeader::getWidth() const
 {
     return m_width;
@@ -146,14 +174,14 @@ std::ostream& PPM::operator<<(std::ostream& os, PPM::PPMHeader header)
 //
 PPM::PPMImage::PPMImage(const std::string& filepath)
 {
-    std::ifstream file(filepath);
+    std::ifstream file(filepath, std::ios::binary);
 
     if ( !(file >> m_header) )
     {
         throw std::runtime_error{"Can't read ppm header from file."};
     }
 
-    m_data.resize( m_header.getWidth() * m_header.getHeight() );
+    m_data.resize( m_header.getWidth() * m_header.getHeight(), PPM::Color{0, 0, 0, m_header.getType()} );
 
     for (auto& pixel : m_data)
     {
@@ -169,7 +197,7 @@ PPM::PPMImage::PPMImage(const std::string& filepath)
 
 bool PPM::PPMImage::setImage(const std::string& filepath)
 {
-    std::ifstream file(filepath);
+    std::ifstream file(filepath, std::ios::binary);
 
     PPM::PPMHeader tempHeader{m_header}; 
     if ( !(file >> m_header) )
@@ -179,12 +207,13 @@ bool PPM::PPMImage::setImage(const std::string& filepath)
     }
 
     std::vector<PPM::Color> tempData{ std::move(m_data) };
-    m_data.resize( m_header.getWidth() * m_header.getHeight() );
+    m_data.resize( m_header.getWidth() * m_header.getHeight(), PPM::Color{0, 0, 0, m_header.getType()} );
 
     for (auto& pixel : m_data)
     {
         if ( !(file >> pixel) )
         {
+            m_header = tempHeader;
             m_data = std::move(tempData);
             return false;
         }
@@ -255,7 +284,7 @@ bool PPM::PPMImage::saveImage(const std::string& filepath)
             }
         } };
 
-    std::ofstream file(filepath);
+    std::ofstream file(filepath, std::ios::binary);
 
     if ( !(file << m_header) )
     {

@@ -6,24 +6,34 @@
 
 namespace PPM
 {
+    enum class PPMType
+    {
+        P3 = 3,
+        P6 = 6
+    };
+
+
     class Color
     {
     private:
-        int m_r;
-        int m_g;
-        int m_b;
+        int      m_r;
+        int      m_g;
+        int      m_b;
+        PPMType  m_type;
 
     public:
         Color() :
             m_r{0},
             m_g{0},
-            m_b{0}
+            m_b{0},
+            m_type{PPMType::P6}
         {};
 
-        Color(int r, int g, int b) :
+        Color(int r, int g, int b, PPMType type = PPMType::P6) :
             m_r{r},
             m_g{g},
-            m_b{b}
+            m_b{b},
+            m_type{type}
         {};
 
         bool operator==(const int value) const;
@@ -34,15 +44,10 @@ namespace PPM
         int getR() const;
         int getG() const;
         int getB() const;
+        PPMType getType() const;
 
         friend std::istream& operator>>(std::istream& is, Color& color);
         friend std::ostream& operator<<(std::ostream& os, Color color);
-    };
-
-
-    enum class PPMType
-    {
-        P3 = 3,
     };
 
 
@@ -69,6 +74,7 @@ namespace PPM
             m_maxValueColor{maxValueColor}
         {};
 
+        PPMType getType() const;
         int getWidth() const;
         int getHeight() const;
         int getMaxValueColor() const;
