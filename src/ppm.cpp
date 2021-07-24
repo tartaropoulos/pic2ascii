@@ -81,7 +81,9 @@ std::ostream& PPM::operator<<(std::ostream& os, PPM::Color color)
     }
     else
     {
-        os << color.m_r << color.m_g << color.m_b;
+        os << static_cast<char>(color.m_r) << 
+              static_cast<char>(color.m_g) << 
+              static_cast<char>(color.m_b);
     }
 
     return os;
