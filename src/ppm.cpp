@@ -229,7 +229,7 @@ bool PPM::PPMImage::setColor(int x, int y, const PPM::Color& color)
 {
     if ( 0 <= color && color <= m_header.getMaxValueColor() )
     {
-        m_data.at( x + y * m_header.getHeight() ) = color;
+        m_data.at( x + y * m_header.getWidth() ) = color;
         return true;
     }
 
@@ -251,7 +251,7 @@ int PPM::PPMImage::getHeight() const
 
 PPM::Color PPM::PPMImage::getColor(int x, int y) const
 {
-    return m_data.at( x + y * m_header.getHeight() );
+    return m_data.at( x + y * m_header.getWidth() );
 }
 
 
