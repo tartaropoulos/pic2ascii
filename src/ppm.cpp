@@ -155,6 +155,9 @@ std::istream& PPM::operator>>(std::istream& is, PPM::PPMHeader& header)
           header.m_height >> 
           header.m_maxValueColor;
 
+    [[maybe_unused]]
+    char unused{static_cast<char>( is.get() )};
+
     return is;
 }
 
