@@ -164,9 +164,9 @@ std::istream& PPM::operator>>(std::istream& is, PPM::PPMHeader& header)
 
 std::ostream& PPM::operator<<(std::ostream& os, PPM::PPMHeader header)
 {
-    os << header.m_type << " " << 
+    os << header.m_type << '\n' <<
           header.m_width << " " << 
-          header.m_height << " " << 
+          header.m_height << '\n' <<
           header.m_maxValueColor << std::endl;
 
     return os;
