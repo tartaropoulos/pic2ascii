@@ -155,8 +155,9 @@ std::istream& PPM::operator>>(std::istream& is, PPM::PPMHeader& header)
           header.m_height >> 
           header.m_maxValueColor;
 
+    // Get '\n' from file between header and first color
     [[maybe_unused]]
-    char unused{static_cast<char>( is.get() )};
+    int unused{ is.get() };
 
     return is;
 }
