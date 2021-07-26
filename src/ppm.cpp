@@ -1,7 +1,6 @@
 #include "ppm.h"
 
 #include <exception>
-#include <filesystem>
 #include <fstream>
 
 //////////////////////////////////////////////
@@ -178,9 +177,14 @@ std::ostream& PPM::operator<<(std::ostream& os, PPM::PPMHeader header)
 //
 // Method implementation of PPMImage class
 //
-PPM::PPMImage::PPMImage(const std::string& filepath)
+PPM::PPMImage::PPMImage(const std::filesystem::path& filepath)
 {
-    std::ifstream file(filepath, std::ios::binary);
+    if ( filepath.extension() != ".ppm" )
+    {
+        throw std::runtime_error{"Wrong extension."};
+    }
+
+    std::ifstream file(filepath.c_str(), std::ios::binary);
 
     if ( !(file >> m_header) )
     {
@@ -201,9 +205,14 @@ PPM::PPMImage::PPMImage(const std::string& filepath)
 }
 
 
-bool PPM::PPMImage::setImage(const std::string& filepath)
+bool PPM::PPMImage::setImage(const std::filesystem::path& filepath)
 {
-    std::ifstream file(filepath, std::ios::binary);
+    if ( filepath.extension() != ".ppm" )
+    {
+        return false;
+    }
+
+    std::ifstream file(filepath.c_str(), std::ios::binary);
 
     PPM::PPMHeader tempHeader{m_header}; 
     if ( !(file >> m_header) )
@@ -267,36 +276,40 @@ PPM::Color PPM::PPMImage::getColor(int x, int y) const
 }
 
 
-bool PPM::PPMImage::saveImage(const std::string& filepath)
+bool PPM::PPMImage::saveImage(const std::filesystem::path& filepath)
 {
+    if ( filepath.extension() != ".ppm" )
+    {
+        return false;
+    }
+
     bool isAlreadyExists{ std::filesystem::exists(filepath) };
-    std::filesystem::path filepathOriginal{filepath};
     std::filesystem::path filepathCopy;
 
     if (isAlreadyExists)
     {
-        filepathCopy = filepathOriginal;
+        filepathCopy = filepath;
         filepathCopy.replace_filename( filepathCopy.stem() += 
                                        std::filesystem::path{"_temp"} += 
                                        filepathCopy.extension() );
 
-        std::filesystem::copy_file(filepathOriginal, filepathCopy);
+        std::filesystem::copy_file(filepath, filepathCopy);
     }
 
-    auto clearTempFile{ [isAlreadyExists, &filepathOriginal, &filepathCopy]
+    auto clearTempFile{ [isAlreadyExists, &filepath, &filepathCopy]
         {
             if (isAlreadyExists) 
             {
-                std::filesystem::copy_file(filepathCopy, filepathOriginal);
+                std::filesystem::copy_file(filepathCopy, filepath);
                 std::filesystem::remove(filepathCopy);
             }
             else
             {
-                std::filesystem::remove(filepathOriginal);
+                std::filesystem::remove(filepath);
             }
         } };
 
-    std::ofstream file(filepath, std::ios::binary);
+    std::ofstream file(filepath.c_str(), std::ios::binary);
 
     if ( !(file << m_header) )
     {

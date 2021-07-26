@@ -1,6 +1,7 @@
 #ifndef PPM_H
 #define PPM_H
 
+#include <filesystem>
 #include <iostream>
 #include <vector> 
 
@@ -92,9 +93,9 @@ namespace PPM
 
     public:
         PPMImage() = default;
-        explicit PPMImage(const std::string& filepath);
+        explicit PPMImage(const std::filesystem::path& filepath);
 
-        bool setImage(const std::string& filepath);
+        bool setImage(const std::filesystem::path& filepath);
         bool setColor(int x, int y, const Color& color);
 
         int getWidth() const;
@@ -102,7 +103,7 @@ namespace PPM
         int getMaxValueColor() const;
         Color getColor(int x, int y) const;
 
-        bool saveImage(const std::string& filepath);
+        bool saveImage(const std::filesystem::path& filepath);
     };
 
 
