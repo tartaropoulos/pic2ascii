@@ -99,6 +99,7 @@ namespace PPM
 
         int getWidth() const;
         int getHeight() const;
+        int getMaxValueColor() const;
         Color getColor(int x, int y) const;
 
         bool saveImage(const std::string& filepath);

@@ -255,6 +255,12 @@ int PPM::PPMImage::getHeight() const
 }
 
 
+int PPM::PPMImage::getMaxValueColor() const
+{
+    return m_header.getMaxValueColor();
+}
+
+
 PPM::Color PPM::PPMImage::getColor(int x, int y) const
 {
     return m_data.at( x + y * m_header.getWidth() );
