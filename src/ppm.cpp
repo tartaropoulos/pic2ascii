@@ -276,9 +276,10 @@ PPM::Color PPM::PPMImage::getColor(int x, int y) const
 }
 
 
-bool PPM::PPMImage::resize(int newWidth, 
-                           int newHeight, 
-                           Resizer::ResizeAlgorithm algorithm)
+bool PPM::PPMImage::resize(
+    int newWidth, 
+    int newHeight, 
+    Resizer::ResizeAlgorithm algorithm)
 {
     int currentWidth{ m_header.getWidth() };
     int currentHeight{ m_header.getHeight() };
@@ -330,9 +331,10 @@ bool PPM::PPMImage::saveImage(const std::filesystem::path& filepath)
     if (isAlreadyExists)
     {
         filepathCopy = filepath;
-        filepathCopy.replace_filename( filepathCopy.stem() += 
-                                       std::filesystem::path{"_temp"} += 
-                                       filepathCopy.extension() );
+        filepathCopy.replace_filename( 
+            filepathCopy.stem() += 
+            std::filesystem::path{"_temp"} += 
+            filepathCopy.extension() );
 
         std::filesystem::copy_file(filepath, filepathCopy);
     }
