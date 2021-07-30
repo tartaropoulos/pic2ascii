@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector> 
 
+#include "resizer.h"
 namespace PPM
 {
     enum class PPMType
@@ -103,6 +104,10 @@ namespace PPM
         int getMaxValueColor() const;
         Color getColor(int x, int y) const;
 
+        bool resize(
+            int newWidth = 50, 
+            int newHeight = 0, 
+            Resizer::ResizeAlgorithm algorithm = Resizer::ResizeAlgorithm::NEAREST_NEIGHBOR);
         bool saveImage(const std::filesystem::path& filepath);
     };
 

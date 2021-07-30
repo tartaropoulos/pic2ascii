@@ -276,6 +276,47 @@ PPM::Color PPM::PPMImage::getColor(int x, int y) const
 }
 
 
+bool PPM::PPMImage::resize(int newWidth, 
+                           int newHeight, 
+                           Resizer::ResizeAlgorithm algorithm)
+{
+    int currentWidth{ m_header.getWidth() };
+    int currentHeight{ m_header.getHeight() };
+
+    if (newWidth < 1 || newHeight < 0)
+    {
+        return false;
+    }
+
+    if (newHeight == 0)
+    {
+        newHeight = currentHeight * ( newWidth / static_cast<float>( currentWidth ) ); 
+    }
+
+    if ( currentWidth == newWidth &&
+         currentHeight == newHeight )
+    {
+        return false;
+    }
+
+    Resizer::Resizer resizer;
+    std::vector<PPM::Color> newData = resizer.resize(
+        m_data, 
+        currentWidth, 
+        currentHeight, 
+        newWidth, 
+        newHeight, 
+        algorithm);
+
+    PPM::PPMHeader newHeader{ m_header.getType(), newWidth, newHeight, m_header.getMaxValueColor() };
+
+    m_data = std::move(newData);
+    m_header = std::move(newHeader);
+
+    return true;
+}
+
+
 bool PPM::PPMImage::saveImage(const std::filesystem::path& filepath)
 {
     if ( filepath.extension() != ".ppm" )
