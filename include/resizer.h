@@ -9,9 +9,9 @@ namespace Resizer
     concept IsRGBColor =
         requires (T color)
         {
-            color.getR();
-            color.getG();
-            color.getB();
+            { color.getR() } -> std::integral;
+            { color.getG() } -> std::integral;
+            { color.getB() } -> std::integral;
         };
 
 

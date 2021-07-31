@@ -10,15 +10,15 @@ namespace ASCII
     concept IsImage = 
         requires (T image)
         {
-            image.getWidth();
-            image.getHeight();
-            image.getMaxValueColor();
+            { image.getWidth() }            -> std::integral;
+            { image.getHeight() }           -> std::integral;
+            { image.getMaxValueColor() }    -> std::integral;
         } &&
         requires (T image, int x, int y)
         {
-            image.getColor(x, y).getR();
-            image.getColor(x, y).getG();
-            image.getColor(x, y).getB();
+            { image.getColor(x, y).getR() } -> std::integral;
+            { image.getColor(x, y).getG() } -> std::integral;
+            { image.getColor(x, y).getB() } -> std::integral;
         };
 
 
