@@ -10,15 +10,15 @@ namespace ASCII
     concept IsImage = 
         requires (T image)
         {
-            { image.getWidth() }            -> std::integral;
-            { image.getHeight() }           -> std::integral;
-            { image.getMaxValueColor() }    -> std::integral;
+            { image.getWidth() }              -> std::integral;
+            { image.getHeight() }             -> std::integral;
+            { image.getMaxValueColor() }      -> std::integral;
         } &&
         requires (T image, int x, int y)
         {
-            { image.getColor(x, y).getR() } -> std::integral;
-            { image.getColor(x, y).getG() } -> std::integral;
-            { image.getColor(x, y).getB() } -> std::integral;
+            { image.getColor(x, y)->getR() }  -> std::integral;
+            { image.getColor(x, y)->getG() }  -> std::integral;
+            { image.getColor(x, y)->getB() }  -> std::integral;
         };
 
 
@@ -54,9 +54,9 @@ namespace ASCII
                 for (int x{0}; x < m_imageWidth; ++x)
                 {
                     auto color{ image.getColor(x, y) };
-                    int  grayR{ static_cast<int>( color.getR() * mc_rY ) };
-                    int  grayG{ static_cast<int>( color.getG() * mc_gY ) };
-                    int  grayB{ static_cast<int>( color.getB() * mc_bY ) };
+                    int  grayR{ static_cast<int>( color->getR() * mc_rY ) };
+                    int  grayG{ static_cast<int>( color->getG() * mc_gY ) };
+                    int  grayB{ static_cast<int>( color->getB() * mc_bY ) };
                     int   gray{ grayR + grayG + grayB };
 
                     m_result.at( x + y * m_imageWidth + y ) = mc_asciiCharacters.at( gray / rangePerAsciiCharacter );

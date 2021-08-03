@@ -7,13 +7,13 @@
 //
 // Method implementations of Color class
 //
-bool PPM::Color::operator==(const int value) const
+bool PPM::PPMColor::operator==(const int value) const
 {
     return m_r == value && m_g == value && m_b == value;
 }
 
 
-auto PPM::Color::operator<=>(const int value) const
+std::strong_ordering PPM::PPMColor::operator<=>(const int value) const
 {
     if (auto compareR{m_r <=> value}; compareR != 0) return compareR;
 
@@ -23,7 +23,7 @@ auto PPM::Color::operator<=>(const int value) const
 }
 
 
-void PPM::Color::setColor(int r, int g, int b)
+void PPM::PPMColor::setColor(int r, int g, int b)
 {
     m_r = r;
     m_g = g;
@@ -31,31 +31,31 @@ void PPM::Color::setColor(int r, int g, int b)
 }
 
 
-int PPM::Color::getR() const
+int PPM::PPMColor::getR() const
 {
     return m_r;
 }
 
 
-int PPM::Color::getG() const
+int PPM::PPMColor::getG() const
 {
     return m_g;
 }
 
 
-int PPM::Color::getB() const
+int PPM::PPMColor::getB() const
 {
     return m_b;
 }
 
 
-PPM::PPMType PPM::Color::getType() const
+PPM::PPMType PPM::PPMColor::getType() const
 {
     return m_type;
 }
 
 
-std::istream& PPM::operator>>(std::istream& is, PPM::Color& color)
+std::istream& PPM::operator>>(std::istream& is, PPM::PPMColor& color)
 {
     if (color.getType() == PPM::PPMType::P3)
     {
@@ -72,7 +72,7 @@ std::istream& PPM::operator>>(std::istream& is, PPM::Color& color)
 }
 
 
-std::ostream& PPM::operator<<(std::ostream& os, PPM::Color color)
+std::ostream& PPM::operator<<(std::ostream& os, PPM::PPMColor color)
 {
     if (color.getType() == PPM::PPMType::P3)
     {
@@ -191,7 +191,7 @@ PPM::PPMImage::PPMImage(const std::filesystem::path& filepath)
         throw std::runtime_error{"Can't read ppm header from file."};
     }
 
-    m_data.resize( m_header.getWidth() * m_header.getHeight(), PPM::Color{0, 0, 0, m_header.getType()} );
+    m_data.resize( m_header.getWidth() * m_header.getHeight(), PPM::PPMColor{0, 0, 0, m_header.getType()} );
 
     for (auto& pixel : m_data)
     {
@@ -221,8 +221,8 @@ bool PPM::PPMImage::setImage(const std::filesystem::path& filepath)
         return false;
     }
 
-    std::vector<PPM::Color> tempData{ std::move(m_data) };
-    m_data.resize( m_header.getWidth() * m_header.getHeight(), PPM::Color{0, 0, 0, m_header.getType()} );
+    std::vector<PPM::PPMColor> tempData{ std::move(m_data) };
+    m_data.resize( m_header.getWidth() * m_header.getHeight(), PPM::PPMColor{0, 0, 0, m_header.getType()} );
 
     for (auto& pixel : m_data)
     {
@@ -240,11 +240,11 @@ bool PPM::PPMImage::setImage(const std::filesystem::path& filepath)
 }
 
 
-bool PPM::PPMImage::setColor(int x, int y, const PPM::Color& color)
+bool PPM::PPMImage::setColor(int x, int y, const Color::ColorBase& color)
 {
     if ( 0 <= color && color <= m_header.getMaxValueColor() )
     {
-        m_data.at( x + y * m_header.getWidth() ) = color;
+        m_data.at( x + y * m_header.getWidth() ) = dynamic_cast< const PPM::PPMColor& >(color);
         return true;
     }
 
@@ -270,9 +270,9 @@ int PPM::PPMImage::getMaxValueColor() const
 }
 
 
-PPM::Color PPM::PPMImage::getColor(int x, int y) const
+std::unique_ptr<Color::ColorBase> PPM::PPMImage::getColor(int x, int y) const
 {
-    return m_data.at( x + y * m_header.getWidth() );
+    return std::make_unique<PPM::PPMColor>( m_data.at( x + y * m_header.getWidth() ) );
 }
 
 
@@ -301,7 +301,7 @@ bool PPM::PPMImage::resize(
     }
 
     Resizer::Resizer resizer;
-    std::vector<PPM::Color> newData = resizer.resize(
+    std::vector<PPM::PPMColor> newData = resizer.resize(
         m_data, 
         currentWidth, 
         currentHeight, 

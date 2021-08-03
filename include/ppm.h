@@ -5,6 +5,8 @@
 #include <iostream>
 #include <vector> 
 
+#include "color.h"
+#include "image.h"
 #include "resizer.h"
 namespace PPM
 {
@@ -15,7 +17,7 @@ namespace PPM
     };
 
 
-    class Color
+    class PPMColor : public Color::ColorBase
     {
     private:
         int      m_r;
@@ -24,32 +26,34 @@ namespace PPM
         PPMType  m_type;
 
     public:
-        Color() :
+        PPMColor() :
             m_r{0},
             m_g{0},
             m_b{0},
             m_type{PPMType::P6}
         {};
 
-        Color(int r, int g, int b, PPMType type = PPMType::P6) :
+        PPMColor(int r, int g, int b, PPMType type = PPMType::P6) :
             m_r{r},
             m_g{g},
             m_b{b},
             m_type{type}
         {};
 
-        bool operator==(const int value) const;
-        auto operator<=>(const int value) const;
+        ~PPMColor() = default;
 
-        void setColor(int r, int g, int b);
+        bool operator==(const int value) const override;
+        std::strong_ordering operator<=>(const int value) const override;
 
-        int getR() const;
-        int getG() const;
-        int getB() const;
+        void setColor(int r, int g, int b) override;
+
+        int getR() const override;
+        int getG() const override;
+        int getB() const override;
         PPMType getType() const;
 
-        friend std::istream& operator>>(std::istream& is, Color& color);
-        friend std::ostream& operator<<(std::ostream& os, Color color);
+        friend std::istream& operator>>(std::istream& is, PPMColor& color);
+        friend std::ostream& operator<<(std::ostream& os, PPMColor color);
     };
 
 
@@ -86,37 +90,37 @@ namespace PPM
     };
 
 
-    class PPMImage
+    class PPMImage : public Image::ImageBase
     {
     private:
-        PPMHeader           m_header;
-        std::vector<Color>  m_data;
+        PPMHeader              m_header;
+        std::vector<PPMColor>  m_data;
 
     public:
         PPMImage() = default;
         explicit PPMImage(const std::filesystem::path& filepath);
 
-        bool setImage(const std::filesystem::path& filepath);
-        bool setColor(int x, int y, const Color& color);
+        bool setImage(const std::filesystem::path& filepath) override;
+        bool setColor(int x, int y, const Color::ColorBase& color) override;
 
-        int getWidth() const;
-        int getHeight() const;
-        int getMaxValueColor() const;
-        Color getColor(int x, int y) const;
+        int getWidth() const override;
+        int getHeight() const override;
+        int getMaxValueColor() const override;
+        std::unique_ptr<Color::ColorBase> getColor(int x, int y) const override;
 
         bool resize(
             int newWidth = 50, 
             int newHeight = 0, 
-            Resizer::ResizeAlgorithm algorithm = Resizer::ResizeAlgorithm::NEAREST_NEIGHBOR);
-        bool saveImage(const std::filesystem::path& filepath);
+            Resizer::ResizeAlgorithm algorithm = Resizer::ResizeAlgorithm::NEAREST_NEIGHBOR) override;
+        bool saveImage(const std::filesystem::path& filepath) override;
     };
 
 
-    std::istream& operator>>(std::istream& is, Color& color);
+    std::istream& operator>>(std::istream& is, PPMColor& color);
     std::istream& operator>>(std::istream& is, PPMType& type);
     std::istream& operator>>(std::istream& is, PPMHeader& header);
 
-    std::ostream& operator<<(std::ostream& os, Color color);
+    std::ostream& operator<<(std::ostream& os, PPMColor color);
     std::ostream& operator<<(std::ostream& os, PPMType type);
     std::ostream& operator<<(std::ostream& os, PPMHeader header);
     
