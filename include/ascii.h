@@ -7,18 +7,18 @@
 namespace ASCII
 {
     template<typename T>
-    concept IsImage = 
+    concept IsImagePtr = 
         requires (T image)
         {
-            { image.getWidth() }              -> std::integral;
-            { image.getHeight() }             -> std::integral;
-            { image.getMaxValueColor() }      -> std::integral;
+            { image->getWidth() }              -> std::integral;
+            { image->getHeight() }             -> std::integral;
+            { image->getMaxValueColor() }      -> std::integral;
         } &&
         requires (T image, int x, int y)
         {
-            { image.getColor(x, y)->getR() }  -> std::integral;
-            { image.getColor(x, y)->getG() }  -> std::integral;
-            { image.getColor(x, y)->getB() }  -> std::integral;
+            { image->getColor(x, y)->getR() }  -> std::integral;
+            { image->getColor(x, y)->getG() }  -> std::integral;
+            { image->getColor(x, y)->getB() }  -> std::integral;
         };
 
 
@@ -39,21 +39,21 @@ namespace ASCII
         int                      m_imageHeight;
 
     public:
-        void convert(IsImage auto& image)
+        void convert(IsImagePtr auto& image)
         {
-            m_imageWidth = image.getWidth();
-            m_imageHeight = image.getHeight();
+            m_imageWidth = image->getWidth();
+            m_imageHeight = image->getHeight();
             int newResultSize( m_imageWidth * m_imageHeight + m_imageHeight );
 
             m_result.resize(newResultSize);
 
-            int rangePerAsciiCharacter{ image.getMaxValueColor() / mc_length };
+            int rangePerAsciiCharacter{ image->getMaxValueColor() / mc_length };
 
             for (int y{0}; y < m_imageHeight; ++y)
             {
                 for (int x{0}; x < m_imageWidth; ++x)
                 {
-                    auto color{ image.getColor(x, y) };
+                    auto color{ image->getColor(x, y) };
                     int  grayR{ static_cast<int>( color->getR() * mc_rY ) };
                     int  grayG{ static_cast<int>( color->getG() * mc_gY ) };
                     int  grayB{ static_cast<int>( color->getB() * mc_bY ) };
