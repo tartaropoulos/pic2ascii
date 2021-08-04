@@ -25,14 +25,21 @@ private:
 public:
     std::optional< std::unique_ptr<Image::ImageBase> > createImage(const std::filesystem::path& filepath)
     {
-        // If file not exists or had wrong extension
-        if ( !std::filesystem::exists(filepath) ||
-            !mc_createImageFunctions.contains( filepath.string() ) )
+        if ( !filepath.has_extension() )
         {
             return {};
         }
 
-        return mc_createImageFunctions.at( filepath.extension().string() )(filepath);
+        std::string extension{ filepath.extension().string() };
+
+        // If file not exists or had wrong extension
+        if ( !std::filesystem::exists(filepath) ||
+             !mc_createImageFunctions.contains(extension) )
+        {
+            return {};
+        }
+
+        return mc_createImageFunctions.at(extension)(filepath);
     }
 };
 
