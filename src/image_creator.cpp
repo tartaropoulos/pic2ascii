@@ -11,7 +11,7 @@ std::optional< std::unique_ptr<Image::ImageBase> > ImageCreator::createImage(con
 
     // If file not exists or had wrong extension
     if ( !std::filesystem::exists(filepath) ||
-            !mc_createImageFunctions.contains(extension) )
+         !mc_createImageFunctions.contains(extension) )
     {
         return {};
     }
