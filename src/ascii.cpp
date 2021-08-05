@@ -9,7 +9,8 @@ auto output{ [](char ch, std::ostream& out) { ch == '\n' ? out << ch : out << ch
 
 bool ASCII::Converter::save(const std::filesystem::path& savePath)
 {
-    if ( savePath.extension() != ".txt" )
+    if ( savePath.extension() != ".txt" ||
+         m_result.empty() )
     {
         return false;
     }
