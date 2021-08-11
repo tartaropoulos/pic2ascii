@@ -41,7 +41,7 @@ private:
     template<typename T>
     std::optional<T> checkReturn(T value, std::function< bool( const Args& ) > hasValue) const
     {
-        if ( hasValue() )
+        if ( hasValue(*this) )
         {
             return value;
         }
