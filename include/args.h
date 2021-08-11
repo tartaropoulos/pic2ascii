@@ -14,6 +14,11 @@ private:
     int m_width;
     int m_height;
 
+    const std::string m_savepathFlag{"-s"};
+    const std::string m_widthFlag{"-w"};
+    const std::string m_heightFlag{"-h"};
+    const std::string m_helpFlag{"--help"};
+
     bool m_hasFilepath;
     bool m_hasSavepath;
     bool m_hasWidth;
