@@ -40,7 +40,7 @@ public:
     bool hasHeight() const;
     bool hasHelp() const;
 
-    void printHelp() const;
+    static void printHelp();
 
 private:
     template<typename T>
