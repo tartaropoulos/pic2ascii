@@ -67,6 +67,10 @@ int main(int argc, char *argv[])
 
 	if ( resultArgs.hasSavepath() )
 	{
-		converter.save( *resultArgs.getSavepath() );
+		bool isSaveImage{ converter.save( *resultArgs.getSavepath() ) };
+		if ( !isSaveImage )
+		{
+			std::cout << "Failed to save image!" << std::endl; 
+		}
 	}
 }
