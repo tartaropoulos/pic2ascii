@@ -4,7 +4,6 @@
 
 Args::Args( std::vector< std::string >& args )
 {
-    std::cout << args.at(0) << std::endl;
     if (args.at(0) == m_helpFlag)
     {
         m_hasHelp = true;
@@ -113,9 +112,12 @@ bool Args::hasHelp() const
 
 void Args::printHelp()
 {
+    int flagNameWidth{16};
+    
     std::cout << "pic2ascii [path to image] [-flags [value except for help flag]]" << std::endl;
-    std::cout << "--help:      help info;" << std::endl;
-    std::cout << "-w [value]:  value for width resize image;" << std::endl;
-    std::cout << "-h [value]:  value for height resize image;" << std::endl;
-    std::cout << "-s [path]:   path for save ASCII-image." << std::endl;
+    std::cout << "Available flags:" << std::endl;
+    std::cout << std::setw(flagNameWidth) << "--help:      " << "help info;" << std::endl;
+    std::cout << std::setw(flagNameWidth) << "-w [value]:  " << "value for width resize image;" << std::endl;
+    std::cout << std::setw(flagNameWidth) << "-h [value]:  " << "value for height resize image;" << std::endl;
+    std::cout << std::setw(flagNameWidth) << "-s [path]:   " << "path for save ASCII-image." << std::endl;
 }
