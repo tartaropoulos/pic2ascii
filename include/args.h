@@ -9,21 +9,21 @@
 class Args
 {
 private:
-    std::filesystem::path m_filepath;
-    std::filesystem::path m_savepath;
-    int m_width;
-    int m_height;
+    std::filesystem::path m_filepath{""};
+    std::filesystem::path m_savepath{""};
+    int m_width{0};
+    int m_height{0};
 
     const std::string m_savepathFlag{"-s"};
     const std::string m_widthFlag{"-w"};
     const std::string m_heightFlag{"-h"};
     const std::string m_helpFlag{"--help"};
 
-    bool m_hasFilepath;
-    bool m_hasSavepath;
-    bool m_hasWidth;
-    bool m_hasHeight;
-    bool m_hasHelp;
+    bool m_hasFilepath{ false };
+    bool m_hasSavepath{ false };
+    bool m_hasWidth{ false };
+    bool m_hasHeight{ false };
+    bool m_hasHelp{ false };
 
 public:
     Args() = delete;
