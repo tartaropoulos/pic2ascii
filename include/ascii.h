@@ -7,7 +7,7 @@
 namespace ASCII
 {
     template<typename T>
-    concept IsImagePtr = 
+    concept IsImagePtr =
         requires (T image)
         {
             { image->getWidth() }              -> std::integral;
@@ -28,7 +28,7 @@ namespace ASCII
         const std::vector<char>  mc_asciiCharacters{'M', 'b', '5', 'f', 'l', '(', ')', '=', '-', ' '};
         const int                mc_length{ static_cast<int>( mc_asciiCharacters.size() - 1 ) };
 
-        // Luminance values (Y in CIE xyY) for sRGB. 
+        // Luminance values (Y in CIE xyY) for sRGB.
         // Taken from http://www.brucelindbloom.com/index.html?WorkingSpaceInfo.html
         const float              mc_rY{0.2126f};
         const float              mc_gY{0.7152f};

@@ -15,11 +15,11 @@ Args::Args( std::vector< std::string >& args )
 
     auto argsEnd{ args.end() };
 
-    auto checkFlag = [&argsEnd](std::vector< std::string >::iterator it, std::string flag) 
+    auto checkFlag = [&argsEnd](std::vector< std::string >::iterator it, std::string flag)
         { return *it == flag && it + 1 < argsEnd; };
 
     for (auto it{ args.begin() + 1 }; it != argsEnd; ++it)
-    {    
+    {
         if ( checkFlag(it, m_savepathFlag) )
         {
             m_savepath = *(it + 1);
@@ -39,7 +39,7 @@ Args::Args( std::vector< std::string >& args )
         {
             m_hasHelp = true;
 
-            // There is only help output with help flag 
+            // There is only help output with help flag
             m_hasFilepath = false;
             m_hasSavepath = false;
             m_hasWidth = false;
@@ -63,7 +63,7 @@ std::optional< std::filesystem::path > Args::getFilepath() const
 
 
 std::optional< std::filesystem::path > Args::getSavepath() const
-{ 
+{
     return checkReturn< std::filesystem::path >(m_savepath, hasSavepath);
 }
 
@@ -113,7 +113,7 @@ bool Args::hasHelp() const
 void Args::printHelp()
 {
     int flagNameWidth{16};
-    
+
     std::cout << "pic2ascii [path to image] [-flags [value except for help flag]]" << std::endl;
     std::cout << "Available flags:" << std::endl;
     std::cout << std::setw(flagNameWidth) << "--help:      " << "help info;" << std::endl;

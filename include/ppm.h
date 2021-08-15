@@ -3,7 +3,7 @@
 
 #include <filesystem>
 #include <iostream>
-#include <vector> 
+#include <vector>
 
 #include "color.h"
 #include "image.h"
@@ -109,8 +109,8 @@ namespace PPM
         std::unique_ptr<Color::ColorBase> getColor(int x, int y) const override;
 
         bool resize(
-            int newWidth = 50, 
-            int newHeight = 0, 
+            int newWidth = 50,
+            int newHeight = 0,
             Resizer::ResizeAlgorithm algorithm = Resizer::ResizeAlgorithm::NEAREST_NEIGHBOR) override;
         bool saveImage(const std::filesystem::path& filepath) override;
     };
@@ -123,7 +123,7 @@ namespace PPM
     std::ostream& operator<<(std::ostream& os, PPMColor color);
     std::ostream& operator<<(std::ostream& os, PPMType type);
     std::ostream& operator<<(std::ostream& os, PPMHeader header);
-    
+
 } // namespace PPM
 
 #endif // PPM_H

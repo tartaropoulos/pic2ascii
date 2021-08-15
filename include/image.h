@@ -24,8 +24,8 @@ namespace Image
         virtual std::unique_ptr<Color::ColorBase> getColor(int x, int y) const = 0;
 
         virtual bool resize(
-            int newWidth = 50, 
-            int newHeight = 0, 
+            int newWidth = 50,
+            int newHeight = 0,
             Resizer::ResizeAlgorithm algorithm = Resizer::ResizeAlgorithm::NEAREST_NEIGHBOR) = 0;
         virtual bool saveImage(const std::filesystem::path& filepath) = 0;
     };

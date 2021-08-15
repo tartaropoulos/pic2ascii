@@ -28,18 +28,18 @@ namespace Resizer
         std::vector<T> resize(
             std::vector<T> data,
             int currentWidth,
-            int currentHeight, 
-            int newWidth, 
-            int newHeight, 
+            int currentHeight,
+            int newWidth,
+            int newHeight,
             ResizeAlgorithm algorithm = ResizeAlgorithm::NEAREST_NEIGHBOR)
         {
             switch (algorithm)
             {
                 case ResizeAlgorithm::NEAREST_NEIGHBOR: return nearestNeighborResize(
-                    data, 
-                    currentWidth, 
-                    currentHeight, 
-                    newWidth, 
+                    data,
+                    currentWidth,
+                    currentHeight,
+                    newWidth,
                     newHeight);
             }
 
@@ -49,10 +49,10 @@ namespace Resizer
     private:
         template<IsRGBColor T>
         std::vector<T> nearestNeighborResize(
-            std::vector<T> data, 
-            int currentWidth, 
-            int currentHeight, 
-            int newWidth, 
+            std::vector<T> data,
+            int currentWidth,
+            int currentHeight,
+            int newWidth,
             int newHeight)
         {
             float widthRatio{ currentWidth / static_cast<float>(newWidth) };

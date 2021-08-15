@@ -13,10 +13,10 @@ class ImageCreator
 {
 private:
     const std::unordered_map
-    < 
-        std::string, 
-        std::function< std::unique_ptr< Image::ImageBase >(const std::filesystem::path&) > 
-    > 
+    <
+        std::string,
+        std::function< std::unique_ptr< Image::ImageBase >(const std::filesystem::path&) >
+    >
     mc_createImageFunctions
     {
         { ".ppm", [](const std::filesystem::path& filepath) { return std::make_unique<PPM::PPMImage>(filepath); } },
