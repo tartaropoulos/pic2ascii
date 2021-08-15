@@ -15,8 +15,27 @@ Args::Args( std::vector< std::string >& args )
 
     auto argsEnd{ args.end() };
 
-    auto checkFlag = [&argsEnd](std::vector< std::string >::iterator it, std::string flag)
+    auto checkFlag = [&argsEnd](std::vector< std::string >::iterator it, std::string flag) -> bool
         { return *it == flag && it + 1 < argsEnd; };
+
+    auto assignSizeArgumentWithCheck = []
+        (
+            std::vector< std::string >::iterator it,
+            int& size,
+            const std::string& flag,
+            bool& hasSize
+        )
+        {
+            try
+            {
+                size = std::stoi( *(it + 1) );
+                hasSize = true;
+            }
+            catch (std::invalid_argument& e)
+            {
+                std::cout << "Wrong value for \"" + flag + "\"!" << std::endl;
+            }
+        };
 
     for (auto it{ args.begin() + 1 }; it != argsEnd; ++it)
     {
@@ -27,13 +46,11 @@ Args::Args( std::vector< std::string >& args )
         }
         else if ( checkFlag(it, m_widthFlag) )
         {
-            m_width = std::stoi( *(it + 1) );
-            m_hasWidth = true;
+            assignSizeArgumentWithCheck(it, m_width, m_widthFlag, m_hasWidth);
         }
         else if ( checkFlag(it, m_heightFlag) )
         {
-            m_height = std::stoi( *(it + 1) );
-            m_hasHeight = true;
+            assignSizeArgumentWithCheck(it, m_height, m_heightFlag, m_hasHeight);
         }
         else if ( *it == m_helpFlag )
         {
