@@ -129,7 +129,7 @@ bool Args::hasHelp() const
 
 void Args::printHelp()
 {
-    int flagNameWidth{16};
+    int flagNameWidth{17};
 
     std::cout << "pic2ascii [path to image] [-flags [value except for help flag]]" << std::endl;
     std::cout << "Available flags:" << std::endl;
@@ -137,4 +137,7 @@ void Args::printHelp()
     std::cout << std::setw(flagNameWidth) << "-w [value]:  " << "value for width resize image;" << std::endl;
     std::cout << std::setw(flagNameWidth) << "-h [value]:  " << "value for height resize image;" << std::endl;
     std::cout << std::setw(flagNameWidth) << "-s [path]:   " << "path for save ASCII-image." << std::endl;
+    std::cout << "Example:" << std::endl;
+    std::string exampleMsg{".\\pic2ascii ../images/test.ppm -w 60 -h 30 -s test.txt"};
+    std::cout << std::setw( exampleMsg.size() + 4 ) << exampleMsg << std::endl;
 }
