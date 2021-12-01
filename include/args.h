@@ -9,15 +9,15 @@
 class Args
 {
 private:
-    std::filesystem::path m_filepath{""};
-    std::filesystem::path m_savepath{""};
-    int m_width{0};
-    int m_height{0};
+    std::filesystem::path m_filepath{ "" };
+    std::filesystem::path m_savepath{ "" };
+    int                   m_width{ 0 };
+    int                   m_height{ 0 };
 
-    const std::string m_savepathFlag{"-s"};
-    const std::string m_widthFlag{"-w"};
-    const std::string m_heightFlag{"-h"};
-    const std::string m_helpFlag{"--help"};
+    const std::string m_savepathFlag{ "-s" };
+    const std::string m_widthFlag{ "-w" };
+    const std::string m_heightFlag{ "-h" };
+    const std::string m_helpFlag{ "--help" };
 
     bool m_hasFilepath{ false };
     bool m_hasSavepath{ false };
@@ -27,12 +27,12 @@ private:
 
 public:
     Args() = delete;
-    Args(std::vector< std::string >& args);
+    Args( std::vector< std::string >& args );
 
     std::optional< std::filesystem::path > getFilepath() const;
     std::optional< std::filesystem::path > getSavepath() const;
-    std::optional< int > getWidth() const;
-    std::optional< int > getHeight() const;
+    std::optional< int >                   getWidth() const;
+    std::optional< int >                   getHeight() const;
 
     bool hasFilepath() const;
     bool hasSavepath() const;
@@ -43,10 +43,10 @@ public:
     static void printHelp();
 
 private:
-    template<typename T>
-    std::optional<T> checkReturn(T value, std::function< bool( const Args& ) > hasValue) const
+    template < typename T >
+    std::optional< T > checkReturn( T value, std::function< bool( const Args& ) > hasValue ) const
     {
-        if ( hasValue(*this) )
+        if ( hasValue( *this ) )
         {
             return value;
         }

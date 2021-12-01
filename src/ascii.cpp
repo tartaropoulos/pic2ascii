@@ -4,22 +4,21 @@
 #include <fstream>
 #include <iostream>
 
-auto output{ [](char ch, std::ostream& out) { ch == '\n' ? out << ch : out << ch << " "; } };
+auto output{ []( char ch, std::ostream& out ) { ch == '\n' ? out << ch : out << ch << " "; } };
 
 
-bool ASCII::Converter::save(const std::filesystem::path& savePath)
+bool ASCII::Converter::save( const std::filesystem::path& savePath )
 {
-    if ( savePath.extension() != ".txt" ||
-         m_result.empty() )
+    if ( savePath.extension() != ".txt" || m_result.empty() )
     {
         return false;
     }
 
     std::ofstream resultFile{ savePath.c_str() };
 
-    auto writeFile{ [&resultFile](char ch) { output(ch, resultFile); } };
+    auto writeFile{ [&resultFile]( char ch ) { output( ch, resultFile ); } };
 
-    std::for_each(m_result.begin(), m_result.end(), writeFile);
+    std::for_each( m_result.begin(), m_result.end(), writeFile );
 
     return true;
 }
@@ -27,7 +26,7 @@ bool ASCII::Converter::save(const std::filesystem::path& savePath)
 
 void ASCII::Converter::print()
 {
-    auto print{ [](char ch) { output(ch, std::cout); } };
+    auto print{ []( char ch ) { output( ch, std::cout ); } };
 
-    std::for_each(m_result.begin(), m_result.end(), print);
+    std::for_each( m_result.begin(), m_result.end(), print );
 }

@@ -11,9 +11,9 @@ AlignConsecutiveDeclarations: AcrossComments
 AlignEscapedNewlines: Right
 AlignOperands: Align
 AlignTrailingComments: true
-AllowAllArgumentsOnNextLine: true
-AllowAllConstructorInitializersOnNextLine: true
-AllowAllParametersOfDeclarationOnNextLine: true
+AllowAllArgumentsOnNextLine: false
+AllowAllConstructorInitializersOnNextLine: false
+AllowAllParametersOfDeclarationOnNextLine: false
 AllowShortEnumsOnASingleLine: false
 AllowShortBlocksOnASingleLine: Always
 AllowShortCaseLabelsOnASingleLine: false
@@ -54,7 +54,7 @@ BreakBeforeInheritanceComma: false
 BreakInheritanceList: AfterColon
 BreakBeforeTernaryOperators: true
 BreakConstructorInitializersBeforeComma: false
-BreakConstructorInitializers: AfterColon
+BreakConstructorInitializers: BeforeComma # AfterColon don't work
 BreakStringLiterals: true
 ColumnLimit: 120
 CommentPragmas: "^ IWYU pragma:"

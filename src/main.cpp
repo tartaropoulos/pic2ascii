@@ -1,48 +1,46 @@
 #include <iostream>
 
-#include "ascii.h"
 #include "args.h"
+#include "ascii.h"
 #include "image_creator.h"
 
-int main(int argc, char *argv[])
+int main( int argc, char* argv[] )
 {
-    if (argc < 2)
+    if ( argc < 2 )
     {
         std::cout << "Program work only with arguments!" << std::endl;
         Args::printHelp();
         return EXIT_FAILURE;
     }
 
-    std::vector<std::string> args{argv + 1, argv + argc};
+    std::vector< std::string > args{ argv + 1, argv + argc };
 
-    Args resultArgs{args};
+    Args resultArgs{ args };
 
-    if ( !resultArgs.hasFilepath() ||
-         resultArgs.hasHelp())
+    if ( !resultArgs.hasFilepath() || resultArgs.hasHelp() )
     {
         resultArgs.printHelp();
         return EXIT_SUCCESS;
     }
 
     std::filesystem::path imageFilepath{ resultArgs.getFilepath().value() };
-    ImageCreator creator;
-    std::optional result{ creator.createImage(imageFilepath) };
+    ImageCreator          creator;
+    std::optional         result{ creator.createImage( imageFilepath ) };
 
-    if (!result.has_value())
+    if ( !result.has_value() )
     {
         std::cout << "Can't find image!" << std::endl;
         resultArgs.printHelp();
         return EXIT_FAILURE;
     }
 
-    std::unique_ptr<Image::ImageBase> resultImage;
-    resultImage = std::move(result.value());
+    std::unique_ptr< Image::ImageBase > resultImage;
+    resultImage = std::move( result.value() );
 
     bool hasWidth{ resultArgs.hasWidth() };
     bool hasHeight{ resultArgs.hasHeight() };
 
-    if ( hasWidth &&
-         hasHeight )
+    if ( hasWidth && hasHeight )
     {
         resultImage->resize( *resultArgs.getWidth(), *resultArgs.getHeight() );
     }
@@ -62,7 +60,7 @@ int main(int argc, char *argv[])
 
     ASCII::Converter converter;
 
-    converter.convert(resultImage);
+    converter.convert( resultImage );
     converter.print();
 
     if ( resultArgs.hasSavepath() )

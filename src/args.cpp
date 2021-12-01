@@ -4,53 +4,48 @@
 
 Args::Args( std::vector< std::string >& args )
 {
-    if (args.at(0) == m_helpFlag)
+    if ( args.at( 0 ) == m_helpFlag )
     {
         m_hasHelp = true;
         return;
     }
 
-    m_filepath = args.at(0);
+    m_filepath    = args.at( 0 );
     m_hasFilepath = true;
 
     auto argsEnd{ args.end() };
 
-    auto checkFlag = [&argsEnd](std::vector< std::string >::iterator it, std::string flag) -> bool
-        { return *it == flag && it + 1 < argsEnd; };
+    auto checkFlag = [&argsEnd]( std::vector< std::string >::iterator it, std::string flag ) -> bool
+    { return *it == flag && it + 1 < argsEnd; };
 
-    auto assignSizeArgumentWithCheck = []
-        (
-            std::vector< std::string >::iterator it,
-            int& size,
-            const std::string& flag,
-            bool& hasSize
-        )
-        {
-            try
-            {
-                size = std::stoi( *(it + 1) );
-                hasSize = true;
-            }
-            catch (std::invalid_argument& e)
-            {
-                std::cout << "Wrong value for \"" + flag + "\"!" << std::endl;
-            }
-        };
-
-    for (auto it{ args.begin() + 1 }; it != argsEnd; ++it)
+    auto assignSizeArgumentWithCheck =
+        []( std::vector< std::string >::iterator it, int& size, const std::string& flag, bool& hasSize )
     {
-        if ( checkFlag(it, m_savepathFlag) )
+        try
         {
-            m_savepath = *(it + 1);
+            size    = std::stoi( *( it + 1 ) );
+            hasSize = true;
+        }
+        catch ( std::invalid_argument& e )
+        {
+            std::cout << "Wrong value for \"" + flag + "\"!" << std::endl;
+        }
+    };
+
+    for ( auto it{ args.begin() + 1 }; it != argsEnd; ++it )
+    {
+        if ( checkFlag( it, m_savepathFlag ) )
+        {
+            m_savepath    = *( it + 1 );
             m_hasSavepath = true;
         }
-        else if ( checkFlag(it, m_widthFlag) )
+        else if ( checkFlag( it, m_widthFlag ) )
         {
-            assignSizeArgumentWithCheck(it, m_width, m_widthFlag, m_hasWidth);
+            assignSizeArgumentWithCheck( it, m_width, m_widthFlag, m_hasWidth );
         }
-        else if ( checkFlag(it, m_heightFlag) )
+        else if ( checkFlag( it, m_heightFlag ) )
         {
-            assignSizeArgumentWithCheck(it, m_height, m_heightFlag, m_hasHeight);
+            assignSizeArgumentWithCheck( it, m_height, m_heightFlag, m_hasHeight );
         }
         else if ( *it == m_helpFlag )
         {
@@ -59,8 +54,8 @@ Args::Args( std::vector< std::string >& args )
             // There is only help output with help flag
             m_hasFilepath = false;
             m_hasSavepath = false;
-            m_hasWidth = false;
-            m_hasHeight = false;
+            m_hasWidth    = false;
+            m_hasHeight   = false;
 
             break;
         }
@@ -69,31 +64,30 @@ Args::Args( std::vector< std::string >& args )
             continue;
         }
     }
-
 }
 
 
 std::optional< std::filesystem::path > Args::getFilepath() const
 {
-    return checkReturn< std::filesystem::path >(m_filepath, hasFilepath);
+    return checkReturn< std::filesystem::path >( m_filepath, hasFilepath );
 }
 
 
 std::optional< std::filesystem::path > Args::getSavepath() const
 {
-    return checkReturn< std::filesystem::path >(m_savepath, hasSavepath);
+    return checkReturn< std::filesystem::path >( m_savepath, hasSavepath );
 }
 
 
 std::optional< int > Args::getWidth() const
 {
-    return checkReturn< int >(m_width, hasWidth);
+    return checkReturn< int >( m_width, hasWidth );
 }
 
 
 std::optional< int > Args::getHeight() const
 {
-    return checkReturn< int >(m_height, hasHeight);
+    return checkReturn< int >( m_height, hasHeight );
 }
 
 
@@ -129,15 +123,19 @@ bool Args::hasHelp() const
 
 void Args::printHelp()
 {
-    int flagNameWidth{17};
+    int flagNameWidth{ 17 };
 
     std::cout << "pic2ascii [path to image] [-flags [value except for help flag]]" << std::endl;
     std::cout << "Available flags:" << std::endl;
-    std::cout << std::setw(flagNameWidth) << "--help:      " << "help info;" << std::endl;
-    std::cout << std::setw(flagNameWidth) << "-w [value]:  " << "value for width resize image;" << std::endl;
-    std::cout << std::setw(flagNameWidth) << "-h [value]:  " << "value for height resize image;" << std::endl;
-    std::cout << std::setw(flagNameWidth) << "-s [path]:   " << "path for save ASCII-image." << std::endl;
+    std::cout << std::setw( flagNameWidth ) << "--help:      "
+              << "help info;" << std::endl;
+    std::cout << std::setw( flagNameWidth ) << "-w [value]:  "
+              << "value for width resize image;" << std::endl;
+    std::cout << std::setw( flagNameWidth ) << "-h [value]:  "
+              << "value for height resize image;" << std::endl;
+    std::cout << std::setw( flagNameWidth ) << "-s [path]:   "
+              << "path for save ASCII-image." << std::endl;
     std::cout << "Example:" << std::endl;
-    std::string exampleMsg{".\\pic2ascii ../images/test.ppm -w 60 -h 30 -s test.txt"};
+    std::string exampleMsg{ ".\\pic2ascii ../images/test.ppm -w 60 -h 30 -s test.txt" };
     std::cout << std::setw( exampleMsg.size() + 4 ) << exampleMsg << std::endl;
 }
