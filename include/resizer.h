@@ -6,13 +6,14 @@
 namespace Resizer
 {
     template < typename T >
-    concept IsRGBColor = requires( T color )
-    { // clang-format off
-        { color.getR() } -> std::integral;
-        { color.getG() } -> std::integral;
-        { color.getB() } -> std::integral;
-        // clang-format on
-    };
+    concept IsRGBColor =
+        // clang-format off
+        requires( T color )
+        {
+            { color.getR() } -> std::integral;
+            { color.getG() } -> std::integral;
+            { color.getB() } -> std::integral;
+        }; // clang-format on
 
 
     enum class ResizeAlgorithm
