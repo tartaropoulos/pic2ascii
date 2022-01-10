@@ -26,20 +26,19 @@ namespace Resizer
     {
     public:
         template < IsRGBColor T >
-        std::vector< T > resize( std::vector< T > data,
-                                 int              currentWidth,
-                                 int              currentHeight,
-                                 int              newWidth,
-                                 int              newHeight,
-                                 ResizeAlgorithm  algorithm = ResizeAlgorithm::NEAREST_NEIGHBOR )
+        std::vector< T > resize( std::vector< T >& data,
+                                 int               currentWidth,
+                                 int               currentHeight,
+                                 int               newWidth,
+                                 int               newHeight,
+                                 ResizeAlgorithm   algorithm = ResizeAlgorithm::NEAREST_NEIGHBOR )
         {
             switch ( algorithm )
             {
                 case ResizeAlgorithm::NEAREST_NEIGHBOR:
+                default:
                     return nearestNeighborResize( data, currentWidth, currentHeight, newWidth, newHeight );
             }
-
-            return data;
         }
 
     private:
