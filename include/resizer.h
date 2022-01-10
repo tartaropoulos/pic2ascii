@@ -43,11 +43,11 @@ namespace Resizer
 
     private:
         template < IsRGBColor T >
-        std::vector< T > nearestNeighborResize( std::vector< T > data,
-                                                int              currentWidth,
-                                                int              currentHeight,
-                                                int              newWidth,
-                                                int              newHeight )
+        std::vector< T > nearestNeighborResize( std::vector< T >& data,
+                                                int               currentWidth,
+                                                int               currentHeight,
+                                                int               newWidth,
+                                                int               newHeight )
         {
             float widthRatio{ currentWidth / static_cast< float >( newWidth ) };
             float heightRatio{ currentHeight / static_cast< float >( newHeight ) };
