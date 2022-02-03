@@ -65,7 +65,7 @@ namespace PPM
 
     public:
         PPMHeader()
-            : m_type{ PPMType::P3 }
+            : m_type{ PPMType::P6 }
             , m_width{ 0 }
             , m_height{ 0 }
             , m_maxValueColor{ 255 } {};
