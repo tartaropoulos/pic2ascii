@@ -7,7 +7,7 @@
 namespace Resizer
 {
     template < typename T >
-    concept IsRGBColor = std::derived_from< T, Color::ColorBase >;
+    concept IsColor = std::derived_from< T, Color::ColorBase >;
 
 
     enum class ResizeAlgorithm
@@ -19,7 +19,7 @@ namespace Resizer
     class Resizer
     {
     public:
-        template < IsRGBColor T >
+        template < IsColor T >
         std::vector< T > resize( std::vector< T >& data,
                                  int               currentWidth,
                                  int               currentHeight,
@@ -36,7 +36,7 @@ namespace Resizer
         }
 
     private:
-        template < IsRGBColor T >
+        template < IsColor T >
         std::vector< T > nearestNeighborResize( std::vector< T >& data,
                                                 int               currentWidth,
                                                 int               currentHeight,
