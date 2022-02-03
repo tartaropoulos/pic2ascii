@@ -5,24 +5,15 @@
 #include <filesystem>
 #include <ranges>
 
+#include "image.h"
 
 namespace ASCII
 {
     template < typename T >
-    concept IsImagePtr =
-        // clang-format off
-        requires( T image )
-        {
-            { image->getWidth() }              -> std::integral;
-            { image->getHeight() }             -> std::integral;
-            { image->getMaxValueColor() }      -> std::integral;
-        } &&
-        requires (T image, int x, int y)
-        {
-            { image->getColor(x, y)->getR() }  -> std::integral;
-            { image->getColor(x, y)->getG() }  -> std::integral;
-            { image->getColor(x, y)->getB() }  -> std::integral;
-        }; // clang-format on
+    concept IsImagePtr = requires( T imagePtr )
+    {
+        requires std::derived_from< std::remove_reference_t< decltype( *imagePtr ) >, Image::ImageBase >;
+    };
 
 
     class Converter
