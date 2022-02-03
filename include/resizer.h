@@ -1,6 +1,7 @@
 #ifndef RESIZER_H
 #define RESIZER_H
 
+#include <ranges>
 #include <vector>
 
 namespace Resizer
@@ -54,11 +55,11 @@ namespace Resizer
 
             std::vector< T > result( newWidth * newHeight, T{} );
 
-            for ( int y{ 0 }; y < newHeight; ++y )
+            for ( int y : std::views::iota( 0, newHeight ) )
             {
                 int sourceY{ static_cast< int >( y * heightRatio ) };
 
-                for ( int x{ 0 }; x < newWidth; ++x )
+                for ( int x : std::views::iota( 0, newWidth ) )
                 {
                     int sourceX{ static_cast< int >( x * widthRatio ) };
                     result.at( x + y * newWidth ) = data.at( sourceX + sourceY * currentWidth );
