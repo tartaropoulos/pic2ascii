@@ -292,8 +292,8 @@ bool PPM::PPMImage::resize( int newWidth, int newHeight, Resizer::ResizeAlgorith
     }
 
     Resizer::Resizer             resizer;
-    std::vector< PPM::PPMColor > newData =
-        resizer.resize( m_data, currentWidth, currentHeight, newWidth, newHeight, algorithm );
+    std::vector< PPM::PPMColor > newData{
+        resizer.resize( m_data, currentWidth, currentHeight, newWidth, newHeight, algorithm ) };
 
     PPM::PPMHeader newHeader{ m_header.getType(), newWidth, newHeight, m_header.getMaxValueColor() };
 
