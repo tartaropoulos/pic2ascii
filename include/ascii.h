@@ -3,6 +3,8 @@
 
 #include <concepts>
 #include <filesystem>
+#include <ranges>
+
 
 namespace ASCII
 {
@@ -50,9 +52,9 @@ namespace ASCII
 
             int rangePerAsciiCharacter{ image->getMaxValueColor() / mc_length };
 
-            for ( int y{ 0 }; y < m_imageHeight; ++y )
+            for ( int y : std::views::iota( 0, m_imageHeight ) )
             {
-                for ( int x{ 0 }; x < m_imageWidth; ++x )
+                for ( int x : std::views::iota( 0, m_imageWidth ) )
                 {
                     auto color{ image->getColor( x, y ) };
                     int  grayR{ static_cast< int >( color->getR() * mc_rY ) };
