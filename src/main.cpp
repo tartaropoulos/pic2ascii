@@ -34,8 +34,7 @@ int main( int argc, char* argv[] )
         return EXIT_FAILURE;
     }
 
-    std::unique_ptr< Image::ImageBase > resultImage;
-    resultImage = std::move( result.value() );
+    std::unique_ptr< Image::ImageBase > resultImage{ result.value().release() };
 
     bool hasWidth{ resultArgs.hasWidth() };
     bool hasHeight{ resultArgs.hasHeight() };
