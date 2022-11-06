@@ -20,7 +20,7 @@ private:
     };
 
 public:
-    std::optional< std::unique_ptr< Image::ImageBase > > createImage( const std::filesystem::path& filepath );
+    std::unique_ptr< Image::ImageBase > createImage( const std::filesystem::path& filepath );
 };
 
 #endif // IMAGE_CREATOR_H

@@ -10,9 +10,9 @@
 namespace ASCII
 {
     template < typename T >
-    concept IsImagePtr = requires( T imagePtr )
+    concept IsImage = requires( T image )
     {
-        requires std::derived_from< std::remove_reference_t< decltype( *imagePtr ) >, Image::ImageBase >;
+        requires std::derived_from< std::remove_reference_t< decltype( image ) >, Image::ImageBase >;
     };
 
 
@@ -33,21 +33,21 @@ namespace ASCII
         int                 m_imageHeight;
 
     public:
-        void convert( IsImagePtr auto& image )
+        void convert( IsImage auto& image )
         {
-            m_imageWidth  = image->getWidth();
-            m_imageHeight = image->getHeight();
+            m_imageWidth  = image.getWidth();
+            m_imageHeight = image.getHeight();
             int newResultSize( m_imageWidth * m_imageHeight + m_imageHeight );
 
             m_result.resize( newResultSize );
 
-            int rangePerAsciiCharacter{ image->getMaxValueColor() / mc_length };
+            int rangePerAsciiCharacter{ image.getMaxValueColor() / mc_length };
 
             for ( int y : std::views::iota( 0, m_imageHeight ) )
             {
                 for ( int x : std::views::iota( 0, m_imageWidth ) )
                 {
-                    auto color{ image->getColor( x, y ) };
+                    auto color{ image.getColor( x, y ) };
                     int  grayR{ static_cast< int >( color->getR() * mc_rY ) };
                     int  grayG{ static_cast< int >( color->getG() * mc_gY ) };
                     int  grayB{ static_cast< int >( color->getB() * mc_bY ) };
