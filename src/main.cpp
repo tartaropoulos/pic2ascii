@@ -23,43 +23,41 @@ int main( int argc, char* argv[] )
         return EXIT_SUCCESS;
     }
 
-    std::filesystem::path imageFilepath{ resultArgs.getFilepath().value() };
-    ImageCreator          creator;
-    std::optional         result{ creator.createImage( imageFilepath ) };
+    std::filesystem::path               imageFilepath{ resultArgs.getFilepath().value() };
+    ImageCreator                        creator;
+    std::unique_ptr< Image::ImageBase > image{ creator.createImage( imageFilepath ) };
 
-    if ( !result.has_value() )
+    if ( !image )
     {
         std::cout << "Can't find image!" << std::endl;
         resultArgs.printHelp();
         return EXIT_FAILURE;
     }
 
-    std::unique_ptr< Image::ImageBase > resultImage{ result.value().release() };
-
     bool hasWidth{ resultArgs.hasWidth() };
     bool hasHeight{ resultArgs.hasHeight() };
 
     if ( hasWidth && hasHeight )
     {
-        resultImage->resize( *resultArgs.getWidth(), *resultArgs.getHeight() );
+        image->resize( *resultArgs.getWidth(), *resultArgs.getHeight() );
     }
     else if ( hasWidth )
     {
-        resultImage->resize( *resultArgs.getWidth() );
+        image->resize( *resultArgs.getWidth() );
     }
     else if ( hasHeight )
     {
-        resultImage->resize();
-        resultImage->resize( resultImage->getWidth(), *resultArgs.getHeight() );
+        image->resize();
+        image->resize( image->getWidth(), *resultArgs.getHeight() );
     }
     else
     {
-        resultImage->resize();
+        image->resize();
     }
 
     ASCII::Converter converter;
 
-    converter.convert( resultImage );
+    converter.convert( *image );
     converter.print();
 
     if ( resultArgs.hasSavepath() )
